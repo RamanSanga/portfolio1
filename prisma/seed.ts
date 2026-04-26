@@ -12,7 +12,7 @@ function slugify(value: string): string {
 }
 
 async function main() {
-  const adminEmail = process.env.ADMIN_EMAIL ?? "admin@portfolio.dev";
+  const adminEmail = (process.env.ADMIN_EMAIL ?? "admin@portfolio.dev").trim().toLowerCase();
   const adminPassword = process.env.ADMIN_PASSWORD ?? "ChangeMe123!";
   const passwordHash = await bcrypt.hash(adminPassword, 12);
 
