@@ -1,6 +1,15 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 import { AdminLoginForm } from "@/components/forms/admin-login-form";
+import { authOptions } from "@/lib/auth";
 
 export default async function AdminLoginPage() {
+  const session = await getServerSession(authOptions);
+
+  if (session?.user) {
+    redirect("/admin/projects");
+  }
+
   return (
     <section className="mx-auto flex min-h-[70vh] w-full max-w-md items-center px-6">
       <div className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6">
