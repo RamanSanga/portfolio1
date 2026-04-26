@@ -41,7 +41,7 @@ export function AdminLoginForm() {
         return;
       }
 
-      router.push(callbackUrl);
+      router.push("/admin/projects");
       router.refresh();
     });
   });
