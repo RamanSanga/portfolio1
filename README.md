@@ -114,3 +114,8 @@ npm run db:seed
 - Recommended uptime monitor target: every 30-60s
 
 For higher traffic tiers, keep DB connection pooling enabled on your managed PostgreSQL provider.
+
+
+git add .
+git commit -m "Fix admin login redirect loop"
+git push -u origin main
