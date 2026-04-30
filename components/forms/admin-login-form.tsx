@@ -27,13 +27,14 @@ export function AdminLoginForm() {
 
   const onSubmit = handleSubmit((values) => {
     setErrorMessage(null);
-    const callbackUrl = searchParams.get("callbackUrl") ?? "/admin";
+    const callbackUrl = searchParams.get("callbackUrl") ?? "/admin/projects";
 
     startTransition(async () => {
       const result = await signIn("credentials", {
         email: values.email,
         password: values.password,
         redirect: false,
+        callbackUrl,
       });
 
       if (!result || result.error) {
@@ -41,51 +42,74 @@ export function AdminLoginForm() {
         return;
       }
 
-      router.push("/admin/projects");
+      router.replace(result.url ?? callbackUrl);
       router.refresh();
     });
   });
 
   return (
-    <form onSubmit={onSubmit} className="mt-6 space-y-4">
+    <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.125rem" }}>
       <div>
-        <label htmlFor="email" className="mb-1.5 block text-xs uppercase tracking-[0.14em] text-zinc-500">
-          Email
-        </label>
+        <label htmlFor="email" className="admin-field-label">Email</label>
         <input
           id="email"
           type="email"
           autoComplete="email"
-          className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2.5 text-sm text-zinc-100 outline-none transition focus:border-zinc-500"
+          className="form-input"
           placeholder="admin@portfolio.dev"
           {...register("email")}
         />
-        {errors.email ? <p className="mt-1.5 text-xs text-red-400">{errors.email.message}</p> : null}
+        {errors.email ? (
+          <p style={{ marginTop: "0.375rem", fontSize: "0.75rem", color: "#f87171" }}>
+            {errors.email.message}
+          </p>
+        ) : null}
       </div>
 
       <div>
-        <label htmlFor="password" className="mb-1.5 block text-xs uppercase tracking-[0.14em] text-zinc-500">
-          Password
-        </label>
+        <label htmlFor="password" className="admin-field-label">Password</label>
         <input
           id="password"
           type="password"
           autoComplete="current-password"
-          className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2.5 text-sm text-zinc-100 outline-none transition focus:border-zinc-500"
+          className="form-input"
           placeholder="Enter password"
           {...register("password")}
         />
-        {errors.password ? <p className="mt-1.5 text-xs text-red-400">{errors.password.message}</p> : null}
+        {errors.password ? (
+          <p style={{ marginTop: "0.375rem", fontSize: "0.75rem", color: "#f87171" }}>
+            {errors.password.message}
+          </p>
+        ) : null}
       </div>
 
-      {errorMessage ? <p className="text-xs text-red-400">{errorMessage}</p> : null}
+      {errorMessage ? (
+        <p
+          style={{
+            padding: "0.625rem 0.875rem",
+            borderRadius: "6px",
+            background: "var(--danger-muted)",
+            border: "1px solid rgba(239,68,68,0.25)",
+            fontSize: "0.8125rem",
+            color: "#fca5a5",
+          }}
+        >
+          {errorMessage}
+        </p>
+      ) : null}
 
       <button
         type="submit"
         disabled={isPending}
-        className="inline-flex w-full items-center justify-center rounded-md bg-zinc-100 px-4 py-2.5 text-sm font-medium text-zinc-950 transition hover:bg-white disabled:opacity-60"
+        className="btn-primary"
+        style={{
+          width: "100%",
+          marginTop: "0.375rem",
+          opacity: isPending ? 0.6 : 1,
+          cursor: isPending ? "not-allowed" : "pointer",
+        }}
       >
-        {isPending ? "Signing in..." : "Sign in"}
+        {isPending ? "Signing in…" : "Sign In"}
       </button>
     </form>
   );

@@ -51,72 +51,128 @@ export function ContactForm() {
   });
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+
+      {/* Name + Email row */}
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-1.5 block text-xs uppercase tracking-[0.12em] text-zinc-500">
+          <label
+            htmlFor="name"
+            className="label-overline"
+            style={{ display: "block", marginBottom: "0.5rem" }}
+          >
             Name
           </label>
           <input
             id="name"
             {...register("name")}
-            className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2.5 text-sm text-zinc-100"
+            className="form-input"
             placeholder="Your name"
           />
-          {errors.name ? <p className="mt-1 text-xs text-red-400">{errors.name.message}</p> : null}
+          {errors.name ? (
+            <p style={{ marginTop: "0.375rem", fontSize: "0.75rem", color: "#f87171" }}>
+              {errors.name.message}
+            </p>
+          ) : null}
         </div>
 
         <div>
-          <label htmlFor="email" className="mb-1.5 block text-xs uppercase tracking-[0.12em] text-zinc-500">
+          <label
+            htmlFor="email"
+            className="label-overline"
+            style={{ display: "block", marginBottom: "0.5rem" }}
+          >
             Email
           </label>
           <input
             id="email"
             type="email"
             {...register("email")}
-            className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2.5 text-sm text-zinc-100"
+            className="form-input"
             placeholder="your@email.com"
           />
-          {errors.email ? <p className="mt-1 text-xs text-red-400">{errors.email.message}</p> : null}
+          {errors.email ? (
+            <p style={{ marginTop: "0.375rem", fontSize: "0.75rem", color: "#f87171" }}>
+              {errors.email.message}
+            </p>
+          ) : null}
         </div>
       </div>
 
+      {/* Subject */}
       <div>
-        <label htmlFor="subject" className="mb-1.5 block text-xs uppercase tracking-[0.12em] text-zinc-500">
+        <label
+          htmlFor="subject"
+          className="label-overline"
+          style={{ display: "block", marginBottom: "0.5rem" }}
+        >
           Subject
         </label>
         <input
           id="subject"
           {...register("subject")}
-          className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2.5 text-sm text-zinc-100"
+          className="form-input"
           placeholder="Project collaboration"
         />
-        {errors.subject ? <p className="mt-1 text-xs text-red-400">{errors.subject.message}</p> : null}
+        {errors.subject ? (
+          <p style={{ marginTop: "0.375rem", fontSize: "0.75rem", color: "#f87171" }}>
+            {errors.subject.message}
+          </p>
+        ) : null}
       </div>
 
+      {/* Message */}
       <div>
-        <label htmlFor="message" className="mb-1.5 block text-xs uppercase tracking-[0.12em] text-zinc-500">
+        <label
+          htmlFor="message"
+          className="label-overline"
+          style={{ display: "block", marginBottom: "0.5rem" }}
+        >
           Message
         </label>
         <textarea
           id="message"
           rows={5}
           {...register("message")}
-          className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2.5 text-sm text-zinc-100"
+          className="form-input"
           placeholder="Tell me about your role, timeline, or project details."
+          style={{ resize: "vertical" }}
         />
-        {errors.message ? <p className="mt-1 text-xs text-red-400">{errors.message.message}</p> : null}
+        {errors.message ? (
+          <p style={{ marginTop: "0.375rem", fontSize: "0.75rem", color: "#f87171" }}>
+            {errors.message.message}
+          </p>
+        ) : null}
       </div>
 
-      {resultMessage ? <p className="text-sm text-zinc-300">{resultMessage}</p> : null}
+      {/* Result message */}
+      {resultMessage ? (
+        <p
+          style={{
+            fontSize: "0.875rem",
+            color: "var(--text-secondary)",
+            padding: "0.75rem 1rem",
+            borderRadius: "8px",
+            border: "1px solid var(--border)",
+            background: "var(--surface-raised)",
+          }}
+        >
+          {resultMessage}
+        </p>
+      ) : null}
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded-md bg-zinc-100 px-4 py-2.5 text-sm font-medium text-zinc-900 transition hover:bg-white disabled:opacity-60"
-      >
-        {isPending ? "Sending..." : "Send Message"}
-      </button>
+      {/* Submit */}
+      <div>
+        <button
+          type="submit"
+          disabled={isPending}
+          className="btn-primary"
+          style={{ opacity: isPending ? 0.6 : 1, cursor: isPending ? "not-allowed" : "pointer" }}
+        >
+          {isPending ? "Sending…" : "Send Message"}
+        </button>
+      </div>
+
     </form>
   );
 }

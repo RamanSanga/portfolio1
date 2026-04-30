@@ -17,92 +17,93 @@ export default async function AdminSkillCategoriesPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">Skill Categories</h1>
-      <p className="mt-1 text-sm text-zinc-400">Create and organize skill buckets used across public and admin views.</p>
+      {/* Page header */}
+      <div className="admin-page-header">
+        <div>
+          <h1 className="admin-page-title">Skill Categories</h1>
+          <p className="admin-page-subtitle">Create and organize skill buckets used across public and admin views.</p>
+        </div>
+      </div>
 
-      <section className="mt-6 rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
-        <h2 className="text-sm font-medium uppercase tracking-[0.14em] text-zinc-400">Create Category</h2>
-        <form action={createSkillCategoryAction} className="mt-4 grid gap-3 md:grid-cols-4">
-          <input
-            name="name"
-            placeholder="Category name"
-            required
-            className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-          />
-          <input
-            name="sortOrder"
-            type="number"
-            min={0}
-            defaultValue={0}
-            className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-          />
-          <label className="inline-flex items-center gap-2 text-sm text-zinc-300">
-            <input type="checkbox" name="isVisible" defaultChecked className="h-4 w-4 accent-zinc-200" />
-            Visible
-          </label>
-          <button
-            type="submit"
-            className="rounded-md bg-zinc-100 px-3 py-2 text-sm font-medium text-zinc-900 transition hover:bg-white"
-          >
-            Add Category
-          </button>
-        </form>
-      </section>
-
-      <section className="mt-6 space-y-3">
-        {categories.map((category) => (
-          <article key={category.id} className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
-            <form action={updateSkillCategoryAction.bind(null, category.id)} className="grid gap-3 md:grid-cols-5">
-              <input
-                name="name"
-                defaultValue={category.name}
-                required
-                className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-              />
-              <input
-                name="slug"
-                defaultValue={category.slug}
-                required
-                className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-              />
-              <input
-                name="sortOrder"
-                type="number"
-                min={0}
-                defaultValue={category.sortOrder}
-                className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-              />
-              <label className="inline-flex items-center gap-2 text-sm text-zinc-300">
-                <input
-                  type="checkbox"
-                  name="isVisible"
-                  defaultChecked={category.isVisible}
-                  className="h-4 w-4 accent-zinc-200"
-                />
-                Visible
+      {/* Add form */}
+      <div className="admin-section" style={{ marginBottom: "1.5rem" }}>
+        <p className="admin-section-title">Create Category</p>
+        <form action={createSkillCategoryAction}>
+          <div className="grid gap-3 md:grid-cols-3" style={{ marginBottom: "0.75rem" }}>
+            <div>
+              <label className="admin-field-label">Category Name</label>
+              <input name="name" placeholder="e.g. Languages, Databases" required className="admin-input" />
+            </div>
+            <div>
+              <label className="admin-field-label">Sort Order</label>
+              <input name="sortOrder" type="number" min={0} defaultValue={0} className="admin-input" />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+              <label className="admin-checkbox" style={{ marginBottom: "0.375rem" }}>
+                <input type="checkbox" name="isVisible" defaultChecked />
+                Visible on public site
               </label>
-              <div className="flex items-center gap-2">
-                <button
-                  type="submit"
-                  className="rounded-md border border-zinc-700 px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] text-zinc-300"
-                >
-                  Save
-                </button>
-                <span className="text-xs text-zinc-500">{category._count.skills} skills</span>
-              </div>
-            </form>
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <button type="submit" className="admin-btn-primary">Add Category</button>
+          </div>
+        </form>
+      </div>
 
-            <form action={deleteSkillCategoryAction.bind(null, category.id)} className="mt-3">
-              <button
-                type="submit"
-                className="rounded-md border border-red-900/70 px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] text-red-300"
-              >
-                Delete Category
-              </button>
-            </form>
-          </article>
-        ))}
-      </section>
+      {/* List */}
+      {categories.length === 0 ? (
+        <div className="empty-state">
+          <p className="empty-state-title">No categories yet</p>
+          <p className="empty-state-desc">Create your first skill category above.</p>
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+          {categories.map((category) => (
+            <article key={category.id} className="admin-card">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
+                <div>
+                  <p style={{ fontSize: "0.9375rem", fontWeight: 500, color: "var(--foreground)" }}>
+                    {category.name}
+                  </p>
+                  <p style={{ fontSize: "0.75rem", color: "var(--text-quaternary)", marginTop: "0.125rem" }}>
+                    {category._count.skills} skill{category._count.skills !== 1 ? "s" : ""}
+                  </p>
+                </div>
+                {!category.isVisible && <span className="badge badge-warning">Hidden</span>}
+              </div>
+              <form action={updateSkillCategoryAction.bind(null, category.id)}>
+                <div className="grid gap-3 md:grid-cols-4" style={{ marginBottom: "0.75rem" }}>
+                  <div>
+                    <label className="admin-field-label">Name</label>
+                    <input name="name" defaultValue={category.name} required className="admin-input" />
+                  </div>
+                  <div>
+                    <label className="admin-field-label">Slug</label>
+                    <input name="slug" defaultValue={category.slug} required className="admin-input" />
+                  </div>
+                  <div>
+                    <label className="admin-field-label">Sort Order</label>
+                    <input name="sortOrder" type="number" min={0} defaultValue={category.sortOrder} className="admin-input" />
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+                    <label className="admin-checkbox">
+                      <input type="checkbox" name="isVisible" defaultChecked={category.isVisible} />
+                      Visible
+                    </label>
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
+                  <form action={deleteSkillCategoryAction.bind(null, category.id)}>
+                    <button type="submit" className="admin-btn-danger">Delete</button>
+                  </form>
+                  <button type="submit" className="admin-btn-primary">Save</button>
+                </div>
+              </form>
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

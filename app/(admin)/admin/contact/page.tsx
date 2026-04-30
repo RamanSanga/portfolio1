@@ -17,29 +17,74 @@ export default async function AdminContactPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">Contact Settings</h1>
-      <p className="mt-1 text-sm text-zinc-400">Manage public contact channels and contact CTA copy.</p>
+      {/* Page header */}
+      <div className="admin-page-header">
+        <div>
+          <h1 className="admin-page-title">Contact Settings</h1>
+          <p className="admin-page-subtitle">Manage public contact channels and contact CTA copy.</p>
+        </div>
+      </div>
 
-      <section className="mt-6 rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
-        <h2 className="text-sm font-medium uppercase tracking-[0.14em] text-zinc-400">Contact Details</h2>
-        <form action={updateContactDetailsAction} className="mt-4 grid gap-3 md:grid-cols-2">
-          <input name="primaryEmail" type="email" defaultValue={profile?.primaryEmail ?? ""} required placeholder="Primary email" className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100" />
-          <input name="universityEmail" type="email" defaultValue={profile?.universityEmail ?? ""} placeholder="University email" className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100" />
-          <input name="phone" defaultValue={profile?.phone ?? ""} placeholder="Phone" className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100" />
-          <input name="location" defaultValue={profile?.location ?? ""} placeholder="Location" className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100" />
-          <input name="education" defaultValue={profile?.education ?? ""} placeholder="Education" className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100" />
-          <button type="submit" className="w-fit rounded-md bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-900 transition hover:bg-white">Save Contact Details</button>
+      {/* Contact details */}
+      <div className="admin-section" style={{ marginBottom: "1.5rem" }}>
+        <p className="admin-section-title">Contact Details</p>
+        <form action={updateContactDetailsAction}>
+          <div className="grid gap-4 md:grid-cols-2" style={{ marginBottom: "1rem" }}>
+            <div>
+              <label className="admin-field-label">Primary Email</label>
+              <input name="primaryEmail" type="email" defaultValue={profile?.primaryEmail ?? ""} required placeholder="you@email.com" className="admin-input" />
+            </div>
+            <div>
+              <label className="admin-field-label">University Email</label>
+              <input name="universityEmail" type="email" defaultValue={profile?.universityEmail ?? ""} placeholder="university@edu.in" className="admin-input" />
+            </div>
+            <div>
+              <label className="admin-field-label">Phone</label>
+              <input name="phone" defaultValue={profile?.phone ?? ""} placeholder="+91 98765 43210" className="admin-input" />
+            </div>
+            <div>
+              <label className="admin-field-label">Location</label>
+              <input name="location" defaultValue={profile?.location ?? ""} placeholder="City, Country" className="admin-input" />
+            </div>
+            <div className="md:col-span-2">
+              <label className="admin-field-label">Education</label>
+              <input name="education" defaultValue={profile?.education ?? ""} placeholder="Degree, University" className="admin-input" />
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <button type="submit" className="admin-btn-primary">Save Contact Details</button>
+          </div>
         </form>
-      </section>
+      </div>
 
-      <section className="mt-6 rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
-        <h2 className="text-sm font-medium uppercase tracking-[0.14em] text-zinc-400">Contact CTA</h2>
-        <form action={updateContactCtaAction} className="mt-4 grid gap-3">
-          <input name="title" defaultValue={String(settingsMap.get("contact_cta_title") ?? "Let us build your next product.")} required className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100" />
-          <textarea name="description" defaultValue={String(settingsMap.get("contact_cta_description") ?? "Open to full-stack and product engineering opportunities.")} required rows={3} className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100" />
-          <button type="submit" className="w-fit rounded-md bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-900 transition hover:bg-white">Save CTA</button>
+      {/* CTA copy */}
+      <div className="admin-section">
+        <p className="admin-section-title">Contact CTA Copy</p>
+        <form action={updateContactCtaAction}>
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label className="admin-field-label">CTA Title</label>
+            <input
+              name="title"
+              defaultValue={String(settingsMap.get("contact_cta_title") ?? "Let us build your next product.")}
+              required
+              className="admin-input"
+            />
+          </div>
+          <div style={{ marginBottom: "1rem" }}>
+            <label className="admin-field-label">CTA Description</label>
+            <textarea
+              name="description"
+              defaultValue={String(settingsMap.get("contact_cta_description") ?? "Open to full-stack and product engineering opportunities.")}
+              required
+              rows={3}
+              className="admin-textarea"
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <button type="submit" className="admin-btn-primary">Save CTA</button>
+          </div>
         </form>
-      </section>
+      </div>
     </div>
   );
 }

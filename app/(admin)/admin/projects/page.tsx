@@ -13,75 +13,77 @@ export default async function AdminProjectsPage() {
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+      {/* Page header */}
+      <div className="admin-page-header">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">Projects</h1>
-          <p className="mt-1 text-sm text-zinc-400">Manage case studies, publication status, and featured order.</p>
+          <h1 className="admin-page-title">Projects</h1>
+          <p className="admin-page-subtitle">Manage case studies, publication status, and featured order.</p>
         </div>
-        <Link
-          href="/admin/projects/new"
-          className="rounded-md bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-900 transition hover:bg-white"
-        >
-          New Project
+        <Link href="/admin/projects/new" className="admin-btn-primary">
+          + New Project
         </Link>
       </div>
 
-      <div className="space-y-3">
-        {projects.map((project) => (
-          <article key={project.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="text-base font-medium text-zinc-100">{project.title}</h2>
-                  <span className="rounded border border-zinc-700 px-2 py-0.5 text-[11px] uppercase tracking-[0.12em] text-zinc-400">
-                    {project.published ? "Published" : "Draft"}
-                  </span>
-                  {project.featured ? (
-                    <span className="rounded border border-zinc-700 px-2 py-0.5 text-[11px] uppercase tracking-[0.12em] text-zinc-300">
-                      Featured
+      {/* Projects list */}
+      {projects.length === 0 ? (
+        <div className="empty-state">
+          <p className="empty-state-title">No projects yet</p>
+          <p className="empty-state-desc">Create your first project to get started.</p>
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+          {projects.map((project) => (
+            <article key={project.id} className="admin-card">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                {/* Left: info */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0.5rem", marginBottom: "0.375rem" }}>
+                    <h2 style={{ fontSize: "0.9375rem", fontWeight: 500, color: "var(--foreground)" }}>
+                      {project.title}
+                    </h2>
+                    <span className={`badge ${project.published ? "badge-success" : "badge-warning"}`}>
+                      {project.published ? "Published" : "Draft"}
                     </span>
-                  ) : null}
+                    {project.featured && (
+                      <span className="badge badge-info">Featured</span>
+                    )}
+                  </div>
+                  <p style={{ fontSize: "0.75rem", color: "var(--text-quaternary)", marginBottom: "0.5rem", fontFamily: "var(--font-mono)" }}>
+                    /{project.slug}
+                  </p>
+                  {project.shortDescription && (
+                    <p style={{ fontSize: "0.8125rem", color: "var(--text-tertiary)", lineHeight: 1.6, maxWidth: "65ch" }}>
+                      {project.shortDescription}
+                    </p>
+                  )}
                 </div>
-                <p className="mt-1 text-sm text-zinc-400">/{project.slug}</p>
-                <p className="mt-3 max-w-3xl text-sm text-zinc-400">{project.shortDescription}</p>
-              </div>
 
-              <div className="flex flex-wrap gap-2">
-                <Link
-                  href={`/admin/projects/${project.id}/edit`}
-                  className="rounded-md border border-zinc-700 px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] text-zinc-300 transition hover:border-zinc-500"
-                >
-                  Edit
-                </Link>
-                <form action={toggleProjectFeaturedAction.bind(null, project.id)}>
-                  <button
-                    type="submit"
-                    className="rounded-md border border-zinc-700 px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] text-zinc-300 transition hover:border-zinc-500"
-                  >
-                    {project.featured ? "Unfeature" : "Feature"}
-                  </button>
-                </form>
-                <form action={toggleProjectPublishedAction.bind(null, project.id)}>
-                  <button
-                    type="submit"
-                    className="rounded-md border border-zinc-700 px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] text-zinc-300 transition hover:border-zinc-500"
-                  >
-                    {project.published ? "Unpublish" : "Publish"}
-                  </button>
-                </form>
-                <form action={deleteProjectAction.bind(null, project.id)}>
-                  <button
-                    type="submit"
-                    className="rounded-md border border-red-900/70 px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] text-red-300 transition hover:border-red-700"
-                  >
-                    Delete
-                  </button>
-                </form>
+                {/* Right: actions */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", flexShrink: 0 }}>
+                  <Link href={`/admin/projects/${project.id}/edit`} className="admin-btn-secondary">
+                    Edit
+                  </Link>
+                  <form action={toggleProjectFeaturedAction.bind(null, project.id)}>
+                    <button type="submit" className="admin-btn-secondary">
+                      {project.featured ? "Unfeature" : "Feature"}
+                    </button>
+                  </form>
+                  <form action={toggleProjectPublishedAction.bind(null, project.id)}>
+                    <button type="submit" className="admin-btn-secondary">
+                      {project.published ? "Unpublish" : "Publish"}
+                    </button>
+                  </form>
+                  <form action={deleteProjectAction.bind(null, project.id)}>
+                    <button type="submit" className="admin-btn-danger">
+                      Delete
+                    </button>
+                  </form>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
-      </div>
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

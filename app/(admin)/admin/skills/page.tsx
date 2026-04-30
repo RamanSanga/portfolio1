@@ -1,5 +1,6 @@
 import { createSkillAction, deleteSkillAction, updateSkillAction } from "@/actions/skills";
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 
 export default async function AdminSkillsPage() {
   const [categories, skills] = await Promise.all([
@@ -19,132 +20,124 @@ export default async function AdminSkillsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">Skills</h1>
-      <p className="mt-1 text-sm text-zinc-400">Manage skill items, feature flags, category assignment, and sort order.</p>
+      {/* Page header */}
+      <div className="admin-page-header">
+        <div>
+          <h1 className="admin-page-title">Skills</h1>
+          <p className="admin-page-subtitle">Manage skill items, feature flags, category assignment, and sort order.</p>
+        </div>
+        <Link href="/admin/skills/categories" className="admin-btn-secondary">
+          Manage Categories →
+        </Link>
+      </div>
 
-      <section className="mt-6 rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
-        <h2 className="text-sm font-medium uppercase tracking-[0.14em] text-zinc-400">Create Skill</h2>
-        <form action={createSkillAction} className="mt-4 grid gap-3 md:grid-cols-6">
-          <input
-            name="name"
-            placeholder="Skill name"
-            required
-            className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-          />
-          <select
-            name="categoryId"
-            required
-            className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-          >
-            <option value="">Select category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-          <input
-            name="proficiency"
-            type="number"
-            min={0}
-            max={100}
-            placeholder="0-100"
-            className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-          />
-          <input
-            name="sortOrder"
-            type="number"
-            min={0}
-            defaultValue={0}
-            className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-          />
-          <label className="inline-flex items-center gap-2 text-sm text-zinc-300">
-            <input type="checkbox" name="isFeatured" className="h-4 w-4 accent-zinc-200" />
-            Featured
-          </label>
-          <button
-            type="submit"
-            className="rounded-md bg-zinc-100 px-3 py-2 text-sm font-medium text-zinc-900 transition hover:bg-white"
-          >
-            Add Skill
-          </button>
-        </form>
-      </section>
-
-      <section className="mt-6 space-y-3">
-        {skills.map((skill) => (
-          <article key={skill.id} className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
-            <form action={updateSkillAction.bind(null, skill.id)} className="grid gap-3 md:grid-cols-7">
-              <input
-                name="name"
-                defaultValue={skill.name}
-                required
-                className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-              />
-              <input
-                name="slug"
-                defaultValue={skill.slug}
-                required
-                className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-              />
-              <select
-                name="categoryId"
-                defaultValue={skill.categoryId}
-                required
-                className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-              >
+      {/* Add form */}
+      <div className="admin-section" style={{ marginBottom: "1.5rem" }}>
+        <p className="admin-section-title">Add Skill</p>
+        <form action={createSkillAction}>
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4" style={{ marginBottom: "0.75rem" }}>
+            <div>
+              <label className="admin-field-label">Skill Name</label>
+              <input name="name" placeholder="e.g. TypeScript" required className="admin-input" />
+            </div>
+            <div>
+              <label className="admin-field-label">Category</label>
+              <select name="categoryId" required className="admin-select">
+                <option value="">Select category…</option>
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.name}
                   </option>
                 ))}
               </select>
-              <input
-                name="proficiency"
-                type="number"
-                min={0}
-                max={100}
-                defaultValue={skill.proficiency ?? ""}
-                className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-              />
-              <input
-                name="sortOrder"
-                type="number"
-                min={0}
-                defaultValue={skill.sortOrder}
-                className="rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"
-              />
-              <label className="inline-flex items-center gap-2 text-sm text-zinc-300">
-                <input
-                  type="checkbox"
-                  name="isFeatured"
-                  defaultChecked={skill.isFeatured}
-                  className="h-4 w-4 accent-zinc-200"
-                />
-                Featured
-              </label>
-              <button
-                type="submit"
-                className="rounded-md border border-zinc-700 px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] text-zinc-300"
-              >
-                Save
-              </button>
-            </form>
-
-            <div className="mt-3 flex items-center justify-between">
-              <p className="text-xs text-zinc-500">Category: {skill.category.name}</p>
-              <form action={deleteSkillAction.bind(null, skill.id)}>
-                <button
-                  type="submit"
-                  className="rounded-md border border-red-900/70 px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] text-red-300"
-                >
-                  Delete Skill
-                </button>
-              </form>
             </div>
-          </article>
-        ))}
-      </section>
+            <div>
+              <label className="admin-field-label">Proficiency (0–100)</label>
+              <input name="proficiency" type="number" min={0} max={100} placeholder="80" className="admin-input" />
+            </div>
+            <div>
+              <label className="admin-field-label">Sort Order</label>
+              <input name="sortOrder" type="number" min={0} defaultValue={0} className="admin-input" />
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <label className="admin-checkbox">
+              <input type="checkbox" name="isFeatured" />
+              Featured
+            </label>
+            <button type="submit" className="admin-btn-primary">Add Skill</button>
+          </div>
+        </form>
+      </div>
+
+      {/* Skills list */}
+      {skills.length === 0 ? (
+        <div className="empty-state">
+          <p className="empty-state-title">No skills yet</p>
+          <p className="empty-state-desc">Add your first skill above.</p>
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+          {skills.map((skill) => (
+            <article key={skill.id} className="admin-card">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
+                <div>
+                  <p style={{ fontSize: "0.9375rem", fontWeight: 500, color: "var(--foreground)" }}>
+                    {skill.name}
+                  </p>
+                  <p style={{ fontSize: "0.75rem", color: "var(--text-quaternary)", marginTop: "0.125rem" }}>
+                    {skill.category.name}
+                    {skill.proficiency != null ? ` · ${skill.proficiency}%` : ""}
+                  </p>
+                </div>
+                {skill.isFeatured && <span className="badge badge-info">Featured</span>}
+              </div>
+              <form action={updateSkillAction.bind(null, skill.id)}>
+                <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-5" style={{ marginBottom: "0.75rem" }}>
+                  <div>
+                    <label className="admin-field-label">Name</label>
+                    <input name="name" defaultValue={skill.name} required className="admin-input" />
+                  </div>
+                  <div>
+                    <label className="admin-field-label">Slug</label>
+                    <input name="slug" defaultValue={skill.slug} required className="admin-input" />
+                  </div>
+                  <div>
+                    <label className="admin-field-label">Category</label>
+                    <select name="categoryId" defaultValue={skill.categoryId} required className="admin-select">
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="admin-field-label">Proficiency</label>
+                    <input name="proficiency" type="number" min={0} max={100} defaultValue={skill.proficiency ?? ""} className="admin-input" />
+                  </div>
+                  <div>
+                    <label className="admin-field-label">Sort Order</label>
+                    <input name="sortOrder" type="number" min={0} defaultValue={skill.sortOrder} className="admin-input" />
+                  </div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <label className="admin-checkbox">
+                    <input type="checkbox" name="isFeatured" defaultChecked={skill.isFeatured} />
+                    Featured
+                  </label>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    <form action={deleteSkillAction.bind(null, skill.id)}>
+                      <button type="submit" className="admin-btn-danger">Delete</button>
+                    </form>
+                    <button type="submit" className="admin-btn-primary">Save</button>
+                  </div>
+                </div>
+              </form>
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -27,28 +27,71 @@ export default async function ContactPage() {
   );
 
   return (
-    <section className="mx-auto w-full max-w-4xl px-6 py-14 md:py-20">
-      <h1 className="text-3xl font-semibold tracking-tight text-zinc-100 md:text-4xl">Contact</h1>
-      <p className="mt-3 text-zinc-400">{ctaDescription}</p>
-
-      <div className="mt-10 grid gap-4 md:grid-cols-2">
-        <a href={`mailto:${profile?.primaryEmail ?? ""}`} className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6">
-          <p className="text-xs uppercase tracking-[0.16em] text-zinc-500">Primary Email</p>
-          <p className="mt-2 text-sm text-zinc-100">{profile?.primaryEmail}</p>
-        </a>
-        <a href={`mailto:${profile?.universityEmail ?? ""}`} className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6">
-          <p className="text-xs uppercase tracking-[0.16em] text-zinc-500">University Email</p>
-          <p className="mt-2 text-sm text-zinc-100">{profile?.universityEmail}</p>
-        </a>
+    <section className="premium-container w-full section-shell pt-24 sm:pt-28 md:pt-32">
+      <div className="page-hero animate-fade-up">
+        <p className="page-hero__eyebrow">Get in touch</p>
+        <h1 className="page-hero__title">Contact</h1>
+        <p className="page-hero__copy">{ctaDescription}</p>
       </div>
 
-      <div className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6">
-        <h2 className="text-xl font-semibold text-zinc-100">{ctaTitle}</h2>
-        <p className="mt-2 text-sm text-zinc-400">Share project details, role scope, and timelines for faster response.</p>
-        <div className="mt-6">
+      <div className="mx-auto grid max-w-7xl gap-[clamp(2rem,5vw,4rem)] lg:grid-cols-[1fr_380px] xl:grid-cols-[1fr_420px]">
+        
+        {/* Contact form */}
+        <div className="page-panel animate-fade-up delay-100 p-6 sm:p-8 lg:p-10">
+          <h2 className="text-[1.25rem] font-semibold tracking-[-0.01em] text-foreground sm:text-[1.5rem]">
+            {ctaTitle}
+          </h2>
+          <p className="mb-8 text-[0.95rem] text-(--text-tertiary)">
+            Share project details, role scope, and timelines for a faster response.
+          </p>
           <ContactForm />
         </div>
+
+        {/* Direct contact cards */}
+        <div className="animate-fade-up delay-200 flex flex-col gap-4 sm:gap-5">
+          <p className="mb-1 text-[0.72rem] font-semibold uppercase tracking-[0.15em] text-(--text-quaternary)">
+            Direct Contact
+          </p>
+          
+          {profile?.primaryEmail && (
+            <a
+              href={`mailto:${profile.primaryEmail}`}
+              className="card group flex flex-col p-5 bg-white/5 sm:p-6"
+            >
+              <div className="mb-2 flex items-center justify-between gap-4">
+                <p className="text-[0.8rem] font-medium text-(--text-tertiary)">Primary Email</p>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:text-foreground transition-colors">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </div>
+              <p className="break-all text-[0.98rem] font-medium text-foreground sm:text-[1.06rem]">
+                {profile.primaryEmail}
+              </p>
+            </a>
+          )}
+          
+          {profile?.universityEmail && (
+            <a
+              href={`mailto:${profile.universityEmail}`}
+              className="card group flex flex-col p-5 bg-white/5 sm:p-6"
+            >
+              <div className="mb-2 flex items-center justify-between gap-4">
+                <p className="text-[0.8rem] font-medium text-(--text-tertiary)">University Email</p>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:text-foreground transition-colors">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </div>
+              <p className="break-all text-[0.98rem] font-medium text-foreground sm:text-[1.06rem]">
+                {profile.universityEmail}
+              </p>
+            </a>
+          )}
+        </div>
+        
       </div>
+
     </section>
   );
 }

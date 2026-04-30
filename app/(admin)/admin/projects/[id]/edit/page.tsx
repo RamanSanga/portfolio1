@@ -46,6 +46,7 @@ export default async function AdminProjectEditPage({ params }: AdminProjectEditP
           repoUrl: project.repoUrl ?? "",
           caseStudyUrl: project.caseStudyUrl ?? "",
           coverImageUrl: project.coverImageUrl ?? "",
+          videoUrl: project.videoUrl ?? "",
           sortOrder: project.sortOrder,
           featured: project.featured,
           published: project.published,

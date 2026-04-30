@@ -12,16 +12,39 @@ export default async function CertificationsPage() {
   });
 
   return (
-    <section className="mx-auto w-full max-w-4xl px-6 py-14 md:py-20">
-      <h1 className="text-3xl font-semibold tracking-tight text-zinc-100 md:text-4xl">Certifications</h1>
-      <div className="mt-10 grid gap-4 md:grid-cols-2">
-        {certifications.map((item) => (
-          <article key={item.id} className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6">
-            <p className="text-xs uppercase tracking-[0.16em] text-zinc-500">{item.issuer}</p>
-            <h2 className="mt-2 text-base font-medium text-zinc-100">{item.title}</h2>
+    <section className="premium-container w-full section-shell">
+      <div className="page-hero animate-fade-up">
+        <p className="page-hero__eyebrow">Continuous Learning</p>
+        <h1 className="page-hero__title">Certifications</h1>
+        <p className="page-hero__copy">
+          Technical credentials and validated milestones across core engineering domains.
+        </p>
+      </div>
+
+      <div className="page-card-grid grid gap-6 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        {certifications.map((item, index) => (
+          <article
+            key={item.id}
+            className={`page-panel group animate-fade-up delay-${Math.min((index + 1) * 100, 500)} p-8 flex min-h-[180px] flex-col justify-center`}
+          >
+            <div className="absolute left-0 top-0 h-[2px] w-full translate-x-[-100%] bg-[linear-gradient(90deg,transparent,var(--border-focus),transparent)] transition-transform duration-500 group-hover:translate-x-0" />
+
+            <div className="page-panel__header">
+              <div className="page-panel__icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 15l-2 5l9-9l-9-9l2 5l-10 4z" />
+                </svg>
+              </div>
+              <p className="page-panel__label">{item.issuer}</p>
+            </div>
+            
+            <h2 className="page-panel__title">
+              {item.title}
+            </h2>
           </article>
         ))}
       </div>
+
     </section>
   );
 }

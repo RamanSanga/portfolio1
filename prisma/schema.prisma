@@ -99,6 +99,8 @@ model Project {
   caseStudyUrl     String?
   coverImageUrl    String?
   coverImagePublicId String?
+  videoUrl         String?
+  videoPublicId    String?
   featured         Boolean       @default(false)
   published        Boolean       @default(true)
   status           ProjectStatus @default(PUBLISHED)

@@ -26,6 +26,9 @@ const getPublicHomeDataCached = unstable_cache(
             slug: true,
             title: true,
             shortDescription: true,
+            coverImageUrl: true,
+            videoUrl: true,
+            liveUrl: true,
           },
         }),
         prisma.skillCategory.findMany({
@@ -119,6 +122,9 @@ const getPublishedProjectsCached = unstable_cache(
         title: true,
         featured: true,
         shortDescription: true,
+        coverImageUrl: true,
+        videoUrl: true,
+        liveUrl: true,
       },
     });
   },
@@ -138,9 +144,11 @@ const getPublishedProjectBySlugCached = unstable_cache(
         shortDescription: true,
         longDescription: true,
         coverImageUrl: true,
+        videoUrl: true,
         techStack: true,
         liveUrl: true,
         repoUrl: true,
+        featured: true,
       },
     });
   },
